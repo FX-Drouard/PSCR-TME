@@ -1,12 +1,13 @@
 #include "Vec3D.h"
 #include "Rayon.h"
 #include "Scene.h"
+#include "Job.h"
 #include <iostream>
 #include <algorithm>
 #include <fstream>
 #include <limits>
 #include <random>
-
+#include "Barrier.h"
 using namespace std;
 using namespace pr;
 
@@ -110,7 +111,7 @@ int main () {
 	Scene scene (1000,1000);
 	// remplir avec un peu d'aléatoire
 	fillScene(scene, re);
-	
+	Barrier bar;
 	// lumieres 
 	vector<Vec3D> lights;
 	lights.reserve(3);
@@ -150,7 +151,7 @@ int main () {
 
 		}
 	}
-
+	bar.waitFor();
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	    std::cout << "Total time "
 	              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()

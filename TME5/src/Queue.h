@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <mutex>
+#include <condition_variable>
 
 namespace pr {
 
@@ -13,7 +14,9 @@ class Queue {
 	const size_t allocsize;
 	size_t begin;
 	size_t sz;
+	bool isBlocking;
 	mutable std::mutex m;
+	std::condition_variable cond;
 
 	// fonctions private, sans protection mutex
 	bool empty() const {
@@ -26,6 +29,7 @@ public:
 	Queue(size_t size) :allocsize(size), begin(0), sz(0) {
 		tab = new T*[size];
 		memset(tab, 0, size * sizeof(T*));
+		isBlocking=true;
 	}
 	size_t size() const {
 		std::unique_lock<std::mutex> lg(m);
@@ -33,8 +37,11 @@ public:
 	}
 	T* pop() {
 		std::unique_lock<std::mutex> lg(m);
-		if (empty()) {
-			return nullptr;
+		while (empty()) {
+			cond.wait(lg);
+		}
+		if(full()){
+			cond.notify_all();
 		}
 		auto ret = tab[begin];
 		tab[begin] = nullptr;
@@ -44,12 +51,20 @@ public:
 	}
 	bool push(T* elt) {
 		std::unique_lock<std::mutex> lg(m);
-		if (full()) {
-			return false;
+		while (full()) {
+			cond.wait(lg);
+		}
+		if(empty()){
+			cond.notify_all();
 		}
 		tab[(begin + sz) % allocsize] = elt;
 		sz++;
 		return true;
+	}
+	void setBlocking(bool isBlocking){
+		std::unique_lock<std::mutex> lg(m);
+		this-> isBlocking = isBlocking;
+		cond.notify_all();
 	}
 	~Queue() {
 		// ?? lock a priori inutile, ne pas detruire si on travaille encore avec
