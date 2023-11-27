@@ -4,9 +4,8 @@
 #include <chrono>
 #include <vector>
 #include <utility>
-#include "hashmap.h"
+#include "hashmap.h"	
 #include "tools.h"
-
 using namespace std;
 
 
@@ -44,13 +43,22 @@ int main () {
 	using namespace std;
 	using namespace std::chrono;
 
+	vector<string> vec;
+	vec.push_back("obo");
+	vec.push_back("ababab");
+	vec.push_back("ab");
+	vec.push_back("iibibi");
+	vec.push_back("ababab");
+	cout<<"size egale: "<<vec.size()<<" et count egale: "<< pr::count(vec.begin(), vec.end())<<endl;
+	
+
 	// Vecteur qui contient les mots déjà lus avec leur nombre d'occurences
 	vector<pair<string, int>> readWords;
 	vector<string> tabString(10);
 	// HashMap comportant les mots (key : mot, value : nb d'occurences)
 	pr::HashMap<string, int> wordsMap = pr::HashMap<string, int>(600000);
 
-	ifstream input = ifstream("./tmp/WarAndPeace.txt");
+	ifstream input = ifstream("../tmp/WarAndPeace.txt");
 
 	auto start = steady_clock::now();
 	cout << "Parsing War and Peace" << endl;
@@ -106,40 +114,7 @@ int main () {
 
     cout << "Found a total of " << nombre_lu << " words." << endl;
 
-	// Affichage final pour "war", "peace" et "toto"
-	// cout << "Compte du mot \"war\" : " << getCountForWord("war", &readWords) << " mots." << endl;
-	// cout << "Compte du mot \"peace\" : " << getCountForWord("peace", &readWords) << " mots." << endl;
-	// cout << "Compte du mot \"toto\" : " << getCountForWord("toto", &readWords) << " mots." << endl;
-
-	// Affichage du nombre de mots distincts depuis le hashmap
-	cout << "Nombre de mots distincts dans la table de hash : " << wordsMap.size() << endl;
-
-	// Affichage final pour "war", "peace" et "toto" AVEC HASHMAP
-	cout << "Compte du mot \"war\" : " << ((wordsMap.get("war") != nullptr) ? *wordsMap.get("war") : 0) << " mots." << endl;
-	cout << "Compte du mot \"peace\" : " << ((wordsMap.get("peace") != nullptr) ? *wordsMap.get("peace") : 0) << " mots." << endl;
-	cout << "Compte du mot \"toto\" : " << ((wordsMap.get("toto") != nullptr) ? *wordsMap.get("toto") : 0) << " mots." << endl;
-
-	// Initalisation du vecteur de la question 7
-	vector<pair<string, int>> wordsVector;
-
-	// Copie des entrées dans la table de hash
-	// Parcours des buckets
-	for(auto it_bucket = wordsMap.begin(); it_bucket != wordsMap.end(); ++it_bucket){
-		// Parcours des forward_list<Entry> de chaque bucket
-		for(auto it_fwdlst = it_bucket->begin(); it_fwdlst != it_bucket->end(); ++it_fwdlst){
-			// Ajout de l'entrée dans le vecteur
-			wordsVector.push_back(make_pair(it_fwdlst->key, it_fwdlst->value));
-		}
-	}
-
-	// question 8 : tri du vecteur par ordre décroissant du nombre d'occurences
-	sort(wordsVector.begin(), wordsVector.end(), [](const pair<string, int> & a, const pair<string, int> & b) -> bool { return a.second > b.second; });
-	cout << "Les 10 mots les plus fréquents : " << endl;
-	for(size_t i=0; i<10; ++i){
-		cout << wordsVector.at(i).first << " : " << wordsVector.at(i).second << " occurrences." << endl;
-	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    return 0;
+	return 0;
 }
 
 

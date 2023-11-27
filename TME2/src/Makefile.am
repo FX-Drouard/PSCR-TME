@@ -13,7 +13,7 @@ AM_LDFLAGS = -pthread
 # version locale a une cible
 #cible_LDFLAGS = -pthread 
 
-tme2-3_SOURCES = main.cpp hashmap.h
+tme2-3_SOURCES = main.cpp hashmap.h tools.h mainTME3.cpp
 
 
 
