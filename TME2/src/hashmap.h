@@ -1,10 +1,16 @@
 #include <forward_list>
+#include "tools.h"
+#include <cstddef>
+#include <ostream>
+#include <forward_list>
+#include <vector>
 
 namespace pr {
 
 
     template <typename K, typename V>
     class HashMap{
+        public:
         class Entry {
             public:
                 const K key;
@@ -13,34 +19,54 @@ namespace pr {
                 // Ctor
                 Entry(const K key, V value): key(key), value(value) {};
         };
+        private:
+            typedef std::vector<std::forward_list<Entry> > buckets_t;
+            buckets_t buckets;
+            size_t siz;
+        public:
         class iterator{
-        			template<typename iterator>
-        			iterator & operator++(){
-        			if(lit++==nullptr){
-        				vit++;
-        				iterator tmp=vit;
-        				for (int i=0;i<vit.size();i++){
-        					if (tmp!=nullptr){
-        						lit=vit[i];
-        						break;
-        					}
-        					tmp++;
-        				}
+        		public:
+                template<typename iterator>
+                typename buckets_t::iterator vit;
+                typename std::forward_list<Entry>::iterator lit;
 
-        			}
+    			iterator & operator++(){
+                    if(lit++==nullptr){
+                        vit++;
+                        iterator tmp=vit;
+                        for (int i=0;i<vit.size();i++){
+                            if (tmp!=nullptr){
+                                lit=vit[i];
+                                break;
+                            }
+                            tmp++;
+                        }
+                    }else{
+                        lit;
+                    }
         		}
 
-        		bool operator!=(const iterator &other){
-        			return lit!=*other;
-        		}
-        		Entry & operator*(){
-        			return *lit;
-        		}
-        	};
-        std::vector<std::forward_list<Entry>> buckets;
-        /// TME3
-        iterator vit=buckets.begin();
-        iterator lit=vit[0];
+                bool operator!=(const iterator &other){
+                    return lit!=*other;
+                }
+                Entry & operator*(){
+                    return *lit;
+                }
+                iterator begin() {
+                    typename buckets_t::iterator vit = buckets.begin();
+                    while (vit->empty() && vit != buckets.end()) {
+                        ++vit;
+                    }
+                    if (vit != buckets.end()) {
+                        return iterator(buckets.end(),vit,vit->begin());
+                    } else {
+                        return end();
+                    }
+                }
+                iterator end() {
+                    return iterator(buckets.end(),buckets.end(),buckets.front().end());
+                }
+        };
         ///
     public:
         // CONSTRUCTEURS

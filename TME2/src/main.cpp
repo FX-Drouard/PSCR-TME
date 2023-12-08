@@ -5,35 +5,9 @@
 #include <vector>
 #include <utility>
 #include "hashmap.h"
+#include "tools.h"
 
 using namespace std;
-template<typename iterator>
-size_t count (iterator begin,iterator end){
-	size_t cpt=0;
-	iterator tmp= begin;
-	while(tmp!=end){
-		++cpt;
-		tmp++;
-	}
-	return cpt;
-}
-
-template <typename iterator,typename T>
-size_t count_if_equal (iterator begin,iterator end, const T & val) {
-	size_t cpt=0;
-	iterator tmp= begin;
-	while(tmp!=end){
-		if(*tmp==val){
-			++cpt;
-		}
-		tmp++;
-	}
-	return cpt;
-}
-
-
-
-
 
 
 // Fonction qui récupère le nombres d'occurences d'un mot dans le vecteur vec
@@ -164,12 +138,7 @@ int main () {
 	for(size_t i=0; i<10; ++i){
 		cout << wordsVector.at(i).first << " : " << wordsVector.at(i).second << " occurrences." << endl;
 	}
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	cout<<"\n\n\n\n"<<"\t\tDEBUT TME3"<<endl;
-	size_t nbtabString= count(tabString.begin(),tabString.end());
-	cout<<"NB COUNT "<<nbtabString<<endl;
-	size_t nbWar= count_if_equal (tabString.begin(),tabString.end(), "war");
-	cout<<"NB COUNT "<<nbWar<<endl;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return 0;
 }
 

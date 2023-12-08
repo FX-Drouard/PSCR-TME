@@ -4,6 +4,8 @@
 #include <netinet/ip.h>
 #include <string>
 #include <iosfwd>
+#include <sys/socket.h>
+#include <netdb.h>
 
 namespace pr {
 

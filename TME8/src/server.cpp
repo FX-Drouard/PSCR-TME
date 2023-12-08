@@ -4,10 +4,10 @@
 
 int main00() {
 	pr::ServerSocket ss(1664);
-
+	std::cout << "Starting Server"<< std::endl;
 	while (1) {
 		pr::Socket sc = ss.accept();
-
+		
 		int fd = sc.getFD();
 
 		int lu;
@@ -18,12 +18,13 @@ int main00() {
 		sc.close();
 	}
 	ss.close();
+	std::cout << " Server CLOSED"<< std::endl;
 	return 0;
 }
 
 int main() {
 	pr::ServerSocket ss(1664);
-
+	std::cout << "Starting Server"<< std::endl;
 	while (1) {
 		pr::Socket sc = ss.accept();
 
@@ -54,8 +55,9 @@ int main() {
 		}
 		sc.close();
 	}
-
+	
 	ss.close();
+	std::cout << " Server CLOSED"<< std::endl;
 	return 0;
 }
 

@@ -46,12 +46,12 @@ int main0() {
 
 // avec une boucle, on attend un 0
 int main() {
-
+	std::cout << "Starting Client"<< std::endl;
 	pr::Socket sock;
-
+	std::cout << "Trying to Connect Client"<< std::endl;
 	sock.connect("localhost", 1664);
-
-	if (sock.isOpen()) {
+	
+	if (sock.isConnected()) {
 		int fd = sock.getFD();
 
 		ssize_t msz = sizeof(int);
@@ -73,6 +73,8 @@ int main() {
 			}
 			std::cout << "lu =" << lu << std::endl;
 		}
+	}else{
+		std::cout << "NOT OPEN" << std::endl;
 	}
 
 	return 0;
